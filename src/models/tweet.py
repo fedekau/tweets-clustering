@@ -12,6 +12,19 @@ class Tweet(Model):
 	tknzr = TweetTokenizer()
 	return tknzr.tokenize(self.data['text'])
 
+    def hashtags(self):
+	hashtags = []
+	for hashtag in self.data['entities']['hashtags']:
+	    hashtags.append(hashtag['text'])
+	return hashtags
+
+
+    def mentions(self):
+	mentions = []
+	for mention in self.data['entities']['user_mentions']:
+	    mentions.append(mention['screen_name'])
+	return mentions
+
     @staticmethod
     def remove_stopwords(tokens):
 	return [word for word in tokens if word not in stopwords.words('spanish')]
