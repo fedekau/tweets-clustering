@@ -1,3 +1,5 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 from orator import Model
 from nltk.tokenize import TweetTokenizer
 from nltk.corpus import stopwords
