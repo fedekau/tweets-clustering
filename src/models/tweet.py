@@ -1,5 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+
 from orator import Model
 from nltk.tokenize import TweetTokenizer
 from nltk.corpus import stopwords
@@ -40,6 +41,6 @@ class Tweet(Model):
 
     @staticmethod
     def remove_punctuation(tokens):
-	punctuation = ['¡', '!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '¿', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~']
+	punctuation = ['¡', '!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '¿', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', "'"]
 
 	return [word for word in tokens if word not in punctuation]
