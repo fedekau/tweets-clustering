@@ -33,10 +33,7 @@ from models.tweet import Tweet
 f = open('data', 'w')
 
 for tweet in Tweet.all():
-  tokens = tweet.tokenize()
-  tokens = Tweet.remove_stopwords(tokens)
-  tokens = Tweet.remove_links(tokens)
-  tokens = Tweet.remove_punctuation(tokens)
+  tokens = tweet.tokenize_and_clean()
   for t in tokens:
     f.write(t.encode('utf8') + ' ')
 

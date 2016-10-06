@@ -44,3 +44,20 @@ class Tweet(Model):
 	punctuation = ['¡', '!', '"', '#', '$', '%', '&', "'", '(', ')', '*', '+', ',', '-', '.', '/', ':', ';', '<', '=', '>', '¿', '?', '@', '[', '\\', ']', '^', '_', '`', '{', '|', '}', '~', "'"]
 
 	return [word for word in tokens if word not in punctuation]
+
+    def matching_words_distance(self, other):
+	self_tokens = self.tokenize_and_clean()
+	other_tokens = other.tokenize_and_clean()
+	print str(self_tokens)
+	print str(other_tokens)
+
+	return 1.0 / (len(set(self_tokens).intersection(other_tokens)) or 1)
+
+
+    def tokenize_and_clean(self):
+      tokens = self.tokenize()
+      tokens = Tweet.remove_stopwords(tokens)
+      tokens = Tweet.remove_links(tokens)
+      tokens = Tweet.remove_punctuation(tokens)
+      return tokens
+
