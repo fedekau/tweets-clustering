@@ -45,13 +45,17 @@ class Tweet(Model):
 
 	return [word for word in tokens if word not in punctuation]
 
+    @staticmethod
+    def remove_numbers(tokens):
+	numbers = re.compile('^-?[0-9]+$')
+
+	return [word for word in tokens if not numbers.match(word)]
+
     def matching_words_distance(self, other):
 	self_tokens = self.tokenize_and_clean()
 	other_tokens = other.tokenize_and_clean()
-	print str(self_tokens)
-	print str(other_tokens)
 
-	return 1.0 / (len(set(self_tokens).intersection(other_tokens)) or 1)
+	return 1.0 - ((len(set(self_tokens).intersection(other_tokens)) or 1 / (len(self_tokens) + len(other_tokens))))
 
 
     def tokenize_and_clean(self):
@@ -59,5 +63,6 @@ class Tweet(Model):
       tokens = Tweet.remove_stopwords(tokens)
       tokens = Tweet.remove_links(tokens)
       tokens = Tweet.remove_punctuation(tokens)
+      tokens = Tweet.remove_numbers(tokens)
       return tokens
 
