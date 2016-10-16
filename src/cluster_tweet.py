@@ -20,16 +20,18 @@ def expandir_a_parecidos(tweet):
 
     return tweet_expandido
 
-tweets = [i for i in Tweet.all() if "@ECavaniOfficial" in i.data['text']]
+tweets = [i for i in Tweet.all() if "@LuisSuarez9" in i.data['text']]
 target_tweet = random.sample(tweets, 1)[0]
 
-print "Target tweet text"
+print "---------------------------------------------"
+print "TARGET TWEET TEXT"
 print target_tweet.data['text']
 
 target_tweet_expandido = expandir_a_parecidos(target_tweet)
 
-print "Target tweet expandido"
+print "TARGET TWEET EXPANDIDO"
 print target_tweet_expandido
+print "---------------------------------------------"
 
 closest_tweet = None
 max_palabras_iguales = 0
@@ -37,15 +39,21 @@ closest_tweets = list()
 
 for candidate in tweets:
     candidate_expandido = expandir_a_parecidos(candidate)
-    palabras_iguales = len(candidate_expandido.intersection(target_tweet_expandido))
+    palabras_interseccion = candidate_expandido.intersection(target_tweet_expandido)
+    palabras_iguales = len(palabras_interseccion)
     if palabras_iguales > 1 and candidate.tweet_id != target_tweet.tweet_id:
 	max_palabras_iguales = palabras_iguales
 	closest_tweet = candidate
-	print "Nuevo tweet cercano"
+	print "NUEVO TWEET CERCANO"
 	print candidate.data['text']
-	print max_palabras_iguales
 	print candidate_expandido
+	print "PALABRAS EN COMUN"
+	print palabras_interseccion
+	print max_palabras_iguales
 	closest_tweets.append(candidate)
+	print "---------------------------------------------"
+
+print "CLUSTER DE TWEETS"
 for c in closest_tweets:
     print c.data['text']
 
