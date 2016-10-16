@@ -57,6 +57,12 @@ class Tweet(Model):
 
 	return [word for word in tokens if word not in abbreviations]
 
+    @staticmethod
+    def remove_mentions(tokens):
+	mentions = re.compile('^@')
+
+	return [word for word in tokens if not mentions.match(word)]
+
     def matching_words_distance(self, other):
 	self_tokens = self.tokenize_and_clean()
 	other_tokens = other.tokenize_and_clean()
@@ -71,5 +77,6 @@ class Tweet(Model):
       tokens = Tweet.remove_punctuation(tokens)
       tokens = Tweet.remove_numbers(tokens)
       tokens = Tweet.remove_abbreviations(tokens)
+      tokens = Tweet.remove_mentions(tokens)
       return tokens
 
