@@ -28,7 +28,7 @@ class Tweet(Model):
 
     @staticmethod
     def remove_stopwords(tokens):
-	return [word for word in tokens if word not in stopwords.words('spanish')]
+	return [word for word in tokens if word.lower() not in stopwords.words('spanish')]
 
     @staticmethod
     def remove_links(tokens):
