@@ -77,6 +77,6 @@ class Tweet(Model):
       tokens = Tweet.remove_punctuation(tokens)
       tokens = Tweet.remove_numbers(tokens)
       tokens = Tweet.remove_abbreviations(tokens)
-      tokens = Tweet.remove_mentions(tokens)
+      # tokens = Tweet.remove_mentions(tokens)
       return tokens
 

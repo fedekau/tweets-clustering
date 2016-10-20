@@ -2,9 +2,9 @@ import word2vec
 import random
 from models.tweet import Tweet
 
-print "Iniciando"
-model = word2vec.load('/Users/federico/proyecto_grado/corpora/clean_corpus/spanish_billion_words/all.bin')
-print "Modelo cargado"
+print ("Iniciando")
+model = word2vec.load('/Users/federico/proyecto_grado/corpora/clean_corpus/spanish_billion_words/all_no_phrase.bin')
+print ("Modelo cargado")
 
 def expandir_a_parecidos(tweet):
     tokens = tweet.tokenize_and_clean()
@@ -15,23 +15,35 @@ def expandir_a_parecidos(tweet):
 	tweet_expandido.add(t)
 	if model.__contains__(t):
 	    indexes, metrics = model.cosine(t)
-	    parecidos_t = model.vocab[indexes][:1]
+	    parecidos_t = model.vocab[indexes][:2]
 	    tweet_expandido |= set(parecidos_t)
 
     return tweet_expandido
 
+def get_tweets(palabras):
+    tweets = Tweet.all()
+    tweets_encontrados = set()
+
+    for t in tweets:
+	for p in palabras:
+	    if p.lower() in t.data['text'].lower():
+		tweets_encontrados.add(t)
+
+    return tweets_encontrados
+
 tweets = [i for i in Tweet.all() if "@LuisSuarez9" in i.data['text']]
+# tweets = get_tweets(['@LuisSuarez9', 'luisito', 'pistolero', 'luis suarez'])
 target_tweet = random.sample(tweets, 1)[0]
 
-print "---------------------------------------------"
-print "TARGET TWEET TEXT"
-print target_tweet.data['text']
+print ("---------------------------------------------")
+print ("TARGET TWEET TEXT")
+print (target_tweet.data['text'])
 
 target_tweet_expandido = expandir_a_parecidos(target_tweet)
 
-print "TARGET TWEET EXPANDIDO"
+print ("TARGET TWEET EXPANDIDO")
 print target_tweet_expandido
-print "---------------------------------------------"
+print ("---------------------------------------------")
 
 closest_tweet = None
 max_palabras_iguales = 0
@@ -44,16 +56,16 @@ for candidate in tweets:
     if palabras_iguales > 1 and candidate.tweet_id != target_tweet.tweet_id:
 	max_palabras_iguales = palabras_iguales
 	closest_tweet = candidate
-	print "NUEVO TWEET CERCANO"
-	print candidate.data['text']
-	print candidate_expandido
-	print "PALABRAS EN COMUN"
-	print palabras_interseccion
-	print max_palabras_iguales
+	print ("NUEVO TWEET CERCANO")
+	print (candidate.data['text'])
+	print (candidate_expandido)
+	print ("PALABRAS EN COMUN")
+	print (palabras_interseccion)
+	print (max_palabras_iguales)
 	closest_tweets.append(candidate)
-	print "---------------------------------------------"
+	print ("---------------------------------------------")
 
-print "CLUSTER DE TWEETS"
+print ("CLUSTER DE TWEETS")
 for c in closest_tweets:
-    print c.data['text']
+    print (c.data['text'])
 
