@@ -9,9 +9,9 @@ import re
 class Tweet(Model):
     pass
 
-    def tokenize(self):
-	tknzr = TweetTokenizer()
-	return tknzr.tokenize(self.data['text'])
+    def remove_emojis(self):
+	emojis = re.compile(u'([\u2600-\u27BF])|([\uD83C][\uDF00-\uDFFF])|([\uD83D][\uDC00-\uDE4F])|([\uD83D][\uDE80-\uDEFF])')
+        return emojis.sub('', self.data['text'])
 
     def hashtags(self):
 	hashtags = []
@@ -25,6 +25,11 @@ class Tweet(Model):
 	for mention in self.data['entities']['user_mentions']:
 	    mentions.append(mention['screen_name'])
 	return mentions
+
+    @staticmethod
+    def tokenize(text):
+	tknzr = TweetTokenizer()
+	return tknzr.tokenize(text)
 
     @staticmethod
     def remove_stopwords(tokens):
@@ -71,12 +76,13 @@ class Tweet(Model):
 
 
     def tokenize_and_clean(self):
-      tokens = self.tokenize()
-      tokens = Tweet.remove_stopwords(tokens)
-      tokens = Tweet.remove_links(tokens)
-      tokens = Tweet.remove_punctuation(tokens)
-      tokens = Tweet.remove_numbers(tokens)
-      tokens = Tweet.remove_abbreviations(tokens)
-      # tokens = Tweet.remove_mentions(tokens)
-      return tokens
+	text = self.remove_emojis()
+	tokens = Tweet.tokenize(text)
+	tokens = Tweet.remove_stopwords(tokens)
+	tokens = Tweet.remove_links(tokens)
+	tokens = Tweet.remove_punctuation(tokens)
+	tokens = Tweet.remove_numbers(tokens)
+	tokens = Tweet.remove_abbreviations(tokens)
+	# tokens = Tweet.remove_mentions(tokens)
+	return tokens
 
