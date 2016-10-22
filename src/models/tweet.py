@@ -92,3 +92,16 @@ class Tweet(Model):
 	# tokens = Tweet.remove_mentions(tokens)
 	return tokens
 
+    def expandir_a_parecidos(self, model):
+	tokens = self.tokenize_and_clean()
+	tweet_expandido = set()
+
+	for t in tokens:
+	    t = t.encode('utf8')
+	    tweet_expandido.add(t)
+	    if model.__contains__(t):
+		indexes, metrics = model.cosine(t)
+		parecidos_t = model.vocab[indexes][:2]
+		tweet_expandido |= set(parecidos_t)
+
+	return tweet_expandido
