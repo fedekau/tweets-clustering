@@ -74,6 +74,11 @@ class Tweet(Model):
 
 	return 1.0 - ((len(set(self_tokens).intersection(other_tokens)) or 1 / (len(self_tokens) + len(other_tokens))))
 
+    @staticmethod
+    def remove_laugh(tokens):
+	laughs = re.compile(r"\b((j|a)+)\b|\b((j|e)+)\b|\b((j|i)+)\b|\b((j|o)+)\b|\b((j|u)+)\b")
+
+	return [word for word in tokens if not laughs.match(word)]
 
     def tokenize_and_clean(self):
 	text = self.remove_emojis()
@@ -83,6 +88,7 @@ class Tweet(Model):
 	tokens = Tweet.remove_punctuation(tokens)
 	tokens = Tweet.remove_numbers(tokens)
 	tokens = Tweet.remove_abbreviations(tokens)
+	tokens = Tweet.remove_laugh(tokens)
 	# tokens = Tweet.remove_mentions(tokens)
 	return tokens
 
