@@ -6,6 +6,13 @@ print ("Iniciando")
 model = word2vec.load('/Users/federico/proyecto_grado/corpora/clean_corpus/spanish_billion_words/all_no_phrase.bin')
 print ("Modelo cargado")
 
+def jaccard_distance(set1, set2):
+    distance = 1.0 - ((1.0 * len(set1.intersection(set2))) / len(set1.union(set2)))
+
+    print ("JACCARD DISTANCE: " + str(distance))
+
+    return distance
+
 def expandir_a_parecidos(tweet):
     tokens = tweet.tokenize_and_clean()
     tweet_expandido = set()
@@ -46,22 +53,16 @@ print target_tweet_expandido
 print ("---------------------------------------------")
 
 closest_tweet = None
-max_palabras_iguales = 0
 closest_tweets = list()
 
 for candidate in tweets:
     candidate_expandido = expandir_a_parecidos(candidate)
-    palabras_interseccion = candidate_expandido.intersection(target_tweet_expandido)
-    palabras_iguales = len(palabras_interseccion)
-    if palabras_iguales > 1 and candidate.tweet_id != target_tweet.tweet_id:
-	max_palabras_iguales = palabras_iguales
+    distancia = jaccard_distance(target_tweet_expandido, candidate_expandido)
+    if distancia < 0.90 and candidate.tweet_id != target_tweet.tweet_id:
 	closest_tweet = candidate
 	print ("NUEVO TWEET CERCANO")
 	print (candidate.data['text'])
 	print (candidate_expandido)
-	print ("PALABRAS EN COMUN")
-	print (palabras_interseccion)
-	print (max_palabras_iguales)
 	closest_tweets.append(candidate)
 	print ("---------------------------------------------")
 
