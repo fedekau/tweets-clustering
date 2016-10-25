@@ -1,23 +1,16 @@
 from models.tweet import Tweet
+import random
 
 # compile documents
-doc_complete = [i.data['text'] for i in Tweet.all() if "@LuisSuarez9" in i.data['text']]
+doc_complete = [i for i in Tweet.all() if "mujica" in i.data['text'].lower()]
 
-
-from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
-import string
-stop = set(stopwords.words('spanish'))
-exclude = set(string.punctuation)
 lemma = SnowballStemmer("spanish")
 
-def clean(doc):
-    stop_free = " ".join([i for i in doc.lower().split() if i not in stop])
-    punc_free = ''.join(ch for ch in stop_free if ch not in exclude)
-    # normalized = " ".join(lemma.stem(word) for word in punc_free.split())
-    return punc_free
+def clean(tweet):
+    return ' '.join(tweet.tokenize_and_clean())
 
-doc_clean = [clean(doc).split() for doc in doc_complete]
+doc_clean = [clean(tweet).split() for tweet in doc_complete]
 
 # Importing Gensim
 import gensim
@@ -33,6 +26,6 @@ doc_term_matrix = [dictionary.doc2bow(doc) for doc in doc_clean]
 Lda = gensim.models.ldamodel.LdaModel
 
 # Running and Trainign LDA model on the document term matrix.
-ldamodel = Lda(doc_term_matrix, num_topics=3, id2word = dictionary, passes=100)
+ldamodel = Lda(doc_term_matrix, num_topics=5, id2word = dictionary, passes=100)
 
-print(ldamodel.print_topics(num_topics=3, num_words=3))
+print(ldamodel.print_topics(num_topics=5, num_words=4))
