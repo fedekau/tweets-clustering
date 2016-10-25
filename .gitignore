@@ -1,2 +1,4 @@
 **/*.pyc
 data
+src/training/corpora/**
+src/training/models/**
