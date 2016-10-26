@@ -4,6 +4,7 @@ import os
 
 from gensim.models import Word2Vec
 from iterable_corpus import IterableCorpus
+from preprocessors import LowercasePreprocessor
 
 def main(argv):
     corpus_path = ''
@@ -22,7 +23,7 @@ def main(argv):
 	elif opt in ("-o", "--ofile"):
 	    model_file = arg
 
-    sentences = IterableCorpus(corpus_path).sentences()
+    sentences = IterableCorpus(corpus_path, preprocessor=LowercasePreprocessor()).sentences()
 
     model = Word2Vec(sentences, size=100, window=5, min_count=5, workers=4)
 
