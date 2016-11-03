@@ -26,6 +26,11 @@ def main(argv):
 	elif opt in ("-s", "--size"):
 	    size = int(arg)
 
+    print 'Start training session'
+    print 'CORPUS: ' + corpus_path
+    print 'MODEL: ' + model_file
+    print 'VECTOR SIZE: ' + str(size)
+
     sentences = IterableCorpus(corpus_path, preprocessor=LowercasePreprocessor()).sentences()
 
     model = Word2Vec(sentences, size=size, window=5, min_count=5, workers=4)
