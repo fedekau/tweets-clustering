@@ -9,8 +9,9 @@ from preprocessors import LowercasePreprocessor
 def main(argv):
     corpus_path = ''
     model_file = ''
+    size = 100
     try:
-	opts, args = getopt.getopt(argv,"hi:o:",["ifile=","ofile="])
+	opts, args = getopt.getopt(argv,"hi:o:s",["ifile=","ofile=","size="])
     except getopt.GetoptError:
 	print 'python train_word2vec.py -i <inputfile> -o <outputfile>'
 	sys.exit(2)
@@ -22,10 +23,12 @@ def main(argv):
 	    corpus_path = arg
 	elif opt in ("-o", "--ofile"):
 	    model_file = arg
+	elif opt in ("-s", "--size"):
+	    size = int(arg)
 
     sentences = IterableCorpus(corpus_path, preprocessor=LowercasePreprocessor()).sentences()
 
-    model = Word2Vec(sentences, size=100, window=5, min_count=5, workers=4)
+    model = Word2Vec(sentences, size=size, window=5, min_count=5, workers=4)
 
     model.save(model_file)
 
