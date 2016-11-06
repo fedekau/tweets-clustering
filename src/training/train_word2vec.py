@@ -1,3 +1,4 @@
+import logging
 import getopt
 import sys
 import os
@@ -35,6 +36,9 @@ def main(argv):
     print 'MODEL: ' + model_file
     print 'VECTOR SIZE: ' + str(size)
     print 'WORKERS: ' + str(workers)
+
+
+    logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.INFO)
 
     sentences = IterableCorpus(corpus_path, preprocessor=LowercasePreprocessor()).sentences()
 
