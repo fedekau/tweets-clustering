@@ -82,7 +82,7 @@ class Tweet(Model):
 
     def tokenize_and_clean(self):
 	text = self.remove_emojis()
-	tokens = Tweet.tokenize(text)
+	tokens = Tweet.tokenize(text.lower())
 	tokens = Tweet.remove_stopwords(tokens)
 	tokens = Tweet.remove_links(tokens)
 	tokens = Tweet.remove_punctuation(tokens)
