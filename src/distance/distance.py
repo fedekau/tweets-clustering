@@ -57,4 +57,23 @@ class Distance():
         except Exception:
             return 1000
 
+    def cosine(self, t1, t2):
+        self.t1_changed = False
+        self.t2_changed = False
+
+        if self.t1 != t1:
+            self.t1 = t1
+            self.t1_changed = True
+
+        if self.t2 != t2:
+            self.t2 = t2
+            self.t2_changed = True
+
+        if self.t1_changed:
+            t1_tokens = self.t1.tokenize_and_clean()
+
+        if self.t2_changed:
+            t2_tokens = self.t2.tokenize_and_clean()
+
+        return 1 - self.model.n_similarity(t1_tokens, t2_tokens)
 
