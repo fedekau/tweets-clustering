@@ -72,11 +72,22 @@ class Distance():
 
         if self.t1_changed:
             t1_tokens = self.tokens(self.t1)
+            self.t1_tokens = []
+            for t in t1_tokens:
+                if self.model.__contains__(t):
+                    self.t1_tokens.append(t)
 
         if self.t2_changed:
             t2_tokens = self.tokens(self.t2)
+            self.t2_tokens = []
+            for t in t2_tokens:
+                if self.model.__contains__(t):
+                    self.t2_tokens.append(t)
 
-        return 1 - self.model.n_similarity(t1_tokens, t2_tokens)
+        try:
+            return 1 - self.model.n_similarity(self.t1_tokens, self.t2_tokens)
+        except Exception:
+            return 1000
 
     def tokens(self, tweet):
         tokens = tweet.tokenize_and_clean()
