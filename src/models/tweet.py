@@ -9,6 +9,8 @@ import re
 class Tweet(Model):
     pass
 
+    __primary_key__ = 'tweet_id'
+
     def remove_emojis(self):
         emojis = re.compile(u'([\U00002600-\U000027BF])|([\U0001f300-\U0001f64F])|([\U0001f680-\U0001f6FF])')
         return emojis.sub('', self.data['text'])
