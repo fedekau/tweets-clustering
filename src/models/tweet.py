@@ -10,7 +10,7 @@ class Tweet(Model):
     pass
 
     def remove_emojis(self):
-        emojis = re.compile(u'([\u2600-\u27BF])|([\uD83C][\uDF00-\uDFFF])|([\uD83D][\uDC00-\uDE4F])|([\uD83D][\uDE80-\uDEFF])')
+        emojis = re.compile(u'([\U00002600-\U000027BF])|([\U0001f300-\U0001f64F])|([\U0001f680-\U0001f6FF])')
         return emojis.sub('', self.data['text'])
 
     def hashtags(self):
