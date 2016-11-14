@@ -5,8 +5,9 @@ import scipy
 
 class Distance():
 
-    def __init__(self, model):
+    def __init__(self, model, lemmatizer=None):
         self.model = model
+        self.lemmatizer = lemmatizer
         self.t1 = None
         self.t2 = None
         self.t1_changed = False
@@ -40,14 +41,14 @@ class Distance():
             self.t2_changed = True
 
         if self.t1_changed:
-            t1_tokens = self.t1.tokenize_and_clean()
+            t1_tokens = self.tokens(self.t1)
             self.t1_vector = [0] * self.model.vector_size
             for t in t1_tokens:
                 if self.model.__contains__(t):
                     self.t1_vector = numpy.sum([self.t1_vector, self.model[t]], axis=0)
 
         if self.t2_changed:
-            t2_tokens = self.t2.tokenize_and_clean()
+            t2_tokens = self.tokens(self.t2)
             self.t2_vector = [0] * self.model.vector_size
             for t in t2_tokens:
                 if self.model.__contains__(t):
@@ -70,10 +71,29 @@ class Distance():
             self.t2_changed = True
 
         if self.t1_changed:
-            t1_tokens = self.t1.tokenize_and_clean()
+            t1_tokens = self.tokens(self.t1)
+            self.t1_tokens = []
+            for t in t1_tokens:
+                if self.model.__contains__(t):
+                    self.t1_tokens.append(t)
 
         if self.t2_changed:
-            t2_tokens = self.t2.tokenize_and_clean()
+            t2_tokens = self.tokens(self.t2)
+            self.t2_tokens = []
+            for t in t2_tokens:
+                if self.model.__contains__(t):
+                    self.t2_tokens.append(t)
 
-        return 1 - self.model.n_similarity(t1_tokens, t2_tokens)
+        try:
+            return 1 - self.model.n_similarity(self.t1_tokens, self.t2_tokens)
+        except Exception:
+            return 1000
+
+    def tokens(self, tweet):
+        tokens = tweet.tokenize_and_clean()
+
+        if self.lemmatizer != None:
+            tokens = self.lemmatizer.lemmatize(tokens)
+
+        return tokens
 
