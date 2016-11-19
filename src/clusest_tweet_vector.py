@@ -13,14 +13,14 @@ print ("Modelo cargado")
 tweets = Person.where('name', 'Luis Suarez').first().tweets.all()
 # tweets = Tweet.all()
 # target_tweet = Tweet.where('tweet_id', '=', '789142606064324608').first()
-target_tweet = random.sample(tweets, 1)[0]
+target_tweet = tweets[0]
 
 print ("---------------------------------------------")
 print ("TARGET TWEET TEXT")
 print (target_tweet.data['text'])
 
 # l = Lemmatizer('/Users/federico/proyecto_grado/tweets-clustering/src/training/corpora/lemmas/lemmatization-es-no-numbers.txt')
-distance = Distance(model)
+distance = Distance(model, None, True)
 
 tweet_ordered = []
 
