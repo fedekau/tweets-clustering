@@ -1,6 +1,6 @@
 from models.person import Person
 
-tweets = Person.find(5).tweets.take(500)
+tweets = Person.find(5).tweets.take(1000)
 
 clusters = {}
 clusters_tweets = {}
@@ -27,6 +27,8 @@ print('Cantidad de clusters: ' + str(len(clusters)))
 for cluster in clusters_tweets:
     print('Cluster id: ' + str(cluster))
     tweets_for_cluster = clusters_tweets.get(cluster)
+
+    print('Number of tweets in cluster: ' + str(len(tweets_for_cluster)))
 
     for tweet in tweets_for_cluster:
         print('\t' + tweet.data['text'])
