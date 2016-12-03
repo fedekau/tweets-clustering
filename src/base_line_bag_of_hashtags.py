@@ -7,11 +7,14 @@ tweets = person.tweets.all()
 print('Person name: ' + str(person.name))
 print('Number of tweets: ' + str(len(tweets)))
 
+all_hashtags = set()
+
 clusters = {}
 clusters_tweets = {}
 
 for tweet in tweets:
     hashtags = tweet.hashtags()
+    all_hashtags.update(hashtags)
 
     assigned_cluster = False
 
@@ -26,6 +29,8 @@ for tweet in tweets:
     if not assigned_cluster:
         clusters[str(hashtags)] = hashtags
         clusters_tweets[str(hashtags)] = [tweet]
+
+print('Number of hashtags: ' + str(len(all_hashtags)))
 
 cluster_sizes = list(map(len, clusters_tweets.values()))
 average = sum(cluster_sizes) / len(clusters_tweets.values())
