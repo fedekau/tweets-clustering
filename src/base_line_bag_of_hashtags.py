@@ -1,6 +1,10 @@
 from models.person import Person
 
-tweets = Person.find(5).tweets.take(1000)
+person = Person.find(5)
+tweets = person.tweets.take(100)
+
+print('Person name: ' + str(person.name))
+print('Number of tweets: ' + str(len(tweets)))
 
 clusters = {}
 clusters_tweets = {}
@@ -22,7 +26,15 @@ for tweet in tweets:
         clusters[str(hashtags)] = hashtags
         clusters_tweets[str(hashtags)] = [tweet]
 
-print('Cantidad de clusters: ' + str(len(clusters)))
+cluster_sizes = list(map(len, clusters_tweets.values()))
+average = sum(cluster_sizes) / len(clusters_tweets.values())
+smallest_cluster = min(cluster_sizes)
+biggest_cluster = max(cluster_sizes)
+
+print('Number of clusters: ' + str(len(clusters)))
+print('Average number of tweets per cluster: ' + str(average))
+print('Smallest cluster: ' + str(smallest_cluster))
+print('Biggest cluster: ' + str(biggest_cluster) + '\n')
 
 for cluster in clusters_tweets:
     print('Cluster id: ' + str(cluster))
