@@ -1,7 +1,8 @@
+from collections import Counter
 from models.person import Person
 
 person = Person.find(5)
-tweets = person.tweets.take(100)
+tweets = person.tweets.all()
 
 print('Person name: ' + str(person.name))
 print('Number of tweets: ' + str(len(tweets)))
@@ -34,7 +35,8 @@ biggest_cluster = max(cluster_sizes)
 print('Number of clusters: ' + str(len(clusters)))
 print('Average number of tweets per cluster: ' + str(average))
 print('Smallest cluster: ' + str(smallest_cluster))
-print('Biggest cluster: ' + str(biggest_cluster) + '\n')
+print('Biggest cluster: ' + str(biggest_cluster))
+print('Cluster sizes: ' + str(Counter(cluster_sizes)) + '\n')
 
 for cluster in clusters_tweets:
     print('Cluster id: ' + str(cluster))
